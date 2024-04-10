@@ -1,9 +1,6 @@
 package edu.iu.habahram.GumballMachine.service;
 
-import edu.iu.habahram.GumballMachine.model.GumballMachine;
-import edu.iu.habahram.GumballMachine.model.GumballMachineRecord;
-import edu.iu.habahram.GumballMachine.model.IGumballMachine;
-import edu.iu.habahram.GumballMachine.model.TransitionResult;
+import edu.iu.habahram.GumballMachine.model.*;
 import edu.iu.habahram.GumballMachine.repository.IGumballRepository;
 import org.springframework.stereotype.Service;
 
@@ -61,8 +58,27 @@ public class GumballService implements IGumballService{
 
     //Refactor insertQuarter, ejectQuarter, and turnCrank methods into a single method called transition
     private TransitionResult transition(String id, String transition) throws IOException {
+//        GumballMachineRecord record = gumballRepository.findById(id);
+//        IGumballMachine machine = new GumballMachine(record.getId(), record.getState(), record.getCount());
+//        TransitionResult result = null;
+//        if(transition.equals("insertQuarter")) {
+//            result = machine.insertQuarter();
+//        } else if(transition.equals("ejectQuarter")) {
+//            result = machine.ejectQuarter();
+//        } else if(transition.equals("turnCrank")) {
+//            result = machine.turnCrank();
+//        }
+//        if(result.succeeded()) {
+//            record.setState(result.stateAfter());
+//            record.setCount(result.countAfter());
+//            save(record);
+//        }
+//        return result;
+
+
+        //Using GumballMachine2 class instead of GumballMachine class
         GumballMachineRecord record = gumballRepository.findById(id);
-        IGumballMachine machine = new GumballMachine(record.getId(), record.getState(), record.getCount());
+        IGumballMachine machine = new GumballMachine2(record.getId(), record.getState(), record.getCount());
         TransitionResult result = null;
         if(transition.equals("insertQuarter")) {
             result = machine.insertQuarter();
@@ -71,7 +87,7 @@ public class GumballService implements IGumballService{
         } else if(transition.equals("turnCrank")) {
             result = machine.turnCrank();
         }
-        if(result.succeeded()) {
+        if( result.succeeded() ) {
             record.setState(result.stateAfter());
             record.setCount(result.countAfter());
             save(record);

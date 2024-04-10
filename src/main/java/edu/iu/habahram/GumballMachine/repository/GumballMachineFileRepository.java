@@ -105,6 +105,7 @@ public class GumballMachineFileRepository implements IGumballRepository {
                     gumball.setState(record.getState());
                 }
                 if(record.getCount() != null) {
+                    
                     gumball.setCount(record.getCount());
                 }
             }

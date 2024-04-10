@@ -35,7 +35,11 @@ public class HasQuarterState implements IState {
 
     @Override
     public TransitionResult dispense() {
-        return new TransitionResult("No gumball dispensed");
+//        return new TransitionResult("No gumball dispensed");
+        String message = "No gumball dispensed";
+        boolean succeeded = false;
+        int count = gumballMachine.getCount();
+        return new TransitionResult(succeeded, message, gumballMachine.getTheStateName(), count);
     }
 
     @Override
