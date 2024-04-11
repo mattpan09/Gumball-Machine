@@ -9,6 +9,9 @@ import java.util.List;
 
 @Service
 public class GumballService implements IGumballService{
+    final String INSERT_QUARTER = Transition.INSERT_QUARTER.name();
+    final String EJECT_QUARTER = Transition.EJECT_QUARTER.name();
+    final String TURN_CRANK = Transition.TURN_CRANK.name();
 
     IGumballRepository gumballRepository;
 
@@ -18,42 +21,17 @@ public class GumballService implements IGumballService{
 
     @Override
     public TransitionResult insertQuarter(String id) throws IOException {
-//        GumballMachineRecord record = gumballRepository.findById(id);
-//        IGumballMachine machine = new GumballMachine(record.getId(), record.getState(), record.getCount());
-//        TransitionResult result = machine.insertQuarter();
-//        if(result.succeeded()) {
-//            record.setState(result.stateAfter());
-//            record.setCount(result.countAfter());
-//            save(record);
-//        }
-//        return result;
-
-        return transition(id, "insertQuarter");
+        return transition(id, INSERT_QUARTER);
     }
 
     @Override
     public TransitionResult ejectQuarter(String id) throws IOException {
-//        return null;
-
-//        GumballMachineRecord record = gumballRepository.findById(id);
-//        IGumballMachine machine = new GumballMachine(record.getId(), record.getState(), record.getCount());
-//        TransitionResult result = machine.ejectQuarter();
-//        if(result.succeeded()) {
-//            record.setState(result.stateAfter());
-//            record.setCount(result.countAfter());
-//            save(record);
-//        }
-//        return result;
-
-
-
-        return transition(id, "ejectQuarter");
+        return transition(id, EJECT_QUARTER);
     }
 
     @Override
     public TransitionResult turnCrank(String id) throws IOException {
-//        return null;
-        return transition(id, "turnCrank");
+        return transition(id, TURN_CRANK);
     }
 
     //Refactor insertQuarter, ejectQuarter, and turnCrank methods into a single method called transition
@@ -80,11 +58,11 @@ public class GumballService implements IGumballService{
         GumballMachineRecord record = gumballRepository.findById(id);
         IGumballMachine machine = new GumballMachine2(record.getId(), record.getState(), record.getCount());
         TransitionResult result = null;
-        if(transition.equals("insertQuarter")) {
+        if (transition.equalsIgnoreCase(INSERT_QUARTER)) {
             result = machine.insertQuarter();
-        } else if(transition.equals("ejectQuarter")) {
+        } else if(transition.equalsIgnoreCase(EJECT_QUARTER)) {
             result = machine.ejectQuarter();
-        } else if(transition.equals("turnCrank")) {
+        } else if(transition.equalsIgnoreCase(TURN_CRANK)) {
             result = machine.turnCrank();
         }
         if( result.succeeded() ) {
