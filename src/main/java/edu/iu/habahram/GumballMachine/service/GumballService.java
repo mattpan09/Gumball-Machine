@@ -12,6 +12,7 @@ public class GumballService implements IGumballService{
     final String INSERT_QUARTER = Transition.INSERT_QUARTER.name();
     final String EJECT_QUARTER = Transition.EJECT_QUARTER.name();
     final String TURN_CRANK = Transition.TURN_CRANK.name();
+    final String REFILL = Transition.REFILL.name();
 
     IGumballRepository gumballRepository;
 
@@ -88,5 +89,25 @@ public class GumballService implements IGumballService{
     @Override
     public String save(GumballMachineRecord gumballMachineRecord) throws IOException {
         return gumballRepository.save(gumballMachineRecord);
+    }
+
+    @Override
+    public TransitionResult refill(String id, int gumballsToAdd) throws IOException {
+        return transit(id, REFILL, gumballsToAdd);
+    }
+
+    private TransitionResult transit(String id, String transition, int gumballsToAdd) throws IOException {
+        GumballMachineRecord record = gumballRepository.findById(id);
+        IGumballMachine machine = new GumballMachine2(record.getId(), record.getState(), record.getCount());
+        TransitionResult result = null;
+        if (transition.equalsIgnoreCase(REFILL)) {
+            result = machine.refill(gumballsToAdd);
+        }
+        if( result.succeeded() ) {
+            record.setState(result.stateAfter());
+            record.setCount(result.countAfter());
+            save(record);
+        }
+        return result;
     }
 }

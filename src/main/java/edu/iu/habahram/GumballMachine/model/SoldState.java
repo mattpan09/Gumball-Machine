@@ -32,7 +32,6 @@ public class SoldState implements IState {
         return new TransitionResult(succeeded, message, gumballMachine.getTheStateName(), gumballMachine.getCount());
     }
 
-
     @Override
     public TransitionResult dispense() {
         String message = "A gumball comes rolling out the slot...";
@@ -47,6 +46,14 @@ public class SoldState implements IState {
             gumballMachine.changeTheStateTo(GumballMachineState.NO_QUARTER);
         }
 
+        return new TransitionResult(succeeded, message, gumballMachine.getTheStateName(), count);
+    }
+
+    @Override
+    public TransitionResult refill() {
+        String message = "You refilled the machine";
+        boolean succeeded = true;
+        int count = gumballMachine.getCount();
         return new TransitionResult(succeeded, message, gumballMachine.getTheStateName(), count);
     }
 

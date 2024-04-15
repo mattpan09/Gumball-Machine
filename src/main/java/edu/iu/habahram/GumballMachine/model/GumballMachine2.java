@@ -61,6 +61,12 @@ public class GumballMachine2 implements IGumballMachine {
     }
 
     @Override
+    public TransitionResult refill(int gumballsToAdd) {
+        count = count + gumballsToAdd;
+        return state.refill();
+    }
+
+    @Override
     public void releaseBall() {
         count = count - 1;
     }
