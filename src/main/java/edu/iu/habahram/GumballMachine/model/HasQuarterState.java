@@ -2,9 +2,11 @@ package edu.iu.habahram.GumballMachine.model;
 
 public class HasQuarterState implements IState {
     IGumballMachine gumballMachine;
+    IState soldState;
 
     public HasQuarterState(IGumballMachine gumballMachine) {
         this.gumballMachine = gumballMachine;
+        soldState = new SoldState(gumballMachine);
     }
 
     @Override
@@ -30,7 +32,10 @@ public class HasQuarterState implements IState {
         boolean succeeded = true;
         String message = "You turned...";
         int count = gumballMachine.getCount();
-        return new TransitionResult(succeeded, message, gumballMachine.getTheStateName(), count);
+
+        //Call the dispense method to dispense the gumball
+        return soldState.dispense();
+//        return new TransitionResult(succeeded, message, gumballMachine.getTheStateName(), count);
     }
 
     @Override
